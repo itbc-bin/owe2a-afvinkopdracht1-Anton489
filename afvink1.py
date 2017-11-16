@@ -1,4 +1,15 @@
+'''
+auteur: Anton Ligterink
+datum: 16-11-2017
+Titel: afvinkopdracht 1
+'''
+
 def lees_inhoud():
+    '''
+    input: leeg
+    output: een 2 lijsten(headers en sequenties) en een variable met het aantal haken.
+    functie: leest de inhoud van een bestand en deel de inhoud op in twee lijsten, telt ook het aantal haken
+    '''
     bestand = open('alpacarna','r')
     headers = []
     seqs = []
@@ -20,26 +31,40 @@ def lees_inhoud():
     return headers, seqs, aantalhaken
 
 def is_dna(seqs):
+    '''
+    input: seqs, een lijst met sequenties
+    output: dna, een boolean
+    functie: kijkt of het bestand volledig bestaat uit DNA
+    '''
+    dna = False
+    lengte = 0
     n_t = 0
-    randomseq = seqs[1]
-    for n in randomseq:
-        if n == 'A':
-            n_t += 1
-        if n == 'T':
-            n_t += 1
-        if n == 'G':
-            n_t += 1
-        if n == 'C':
-            n_t += 1
-    if n_t == len(randomseq):
-        dna = True
-        return dna
-    else:
-        dna = False
-        return dna
+    for seq in seqs:
+        for n in seq:
+            lengte += 1
+            if n == 'A':
+                n_t += 1
+            if n == 'T':
+                n_t += 1
+            if n == 'G':
+                n_t += 1
+            if n == 'C':
+                n_t += 1
+
+    if n_t == lengte:
+            dna = True
+    return dna
 
 def knipt(seqs_g):
-    bestand2 = open('enzymen.txt')
+    '''
+    input: seqs_g, een sequentie
+    output: enzymenlijst, een lijst met enzymennamen die voorkomen in de sequentie seqs_g en een boolean, badline, die aangeeft of er een slecht geformateerde lijn in de enzymen file voorkomt
+    functie: kijkt naar een lijst met enzymen en vergelijkt deze met de sequentie om te kijken of ze overeen komen
+    '''
+    try:
+        bestand2 = open('enzymen.txt')
+    except FileNotFoundError:
+        print('The file was not found')
     enzymenlijst = []
     for line in bestand2.readlines():
         line = line.replace('\n','')
@@ -54,6 +79,11 @@ def knipt(seqs_g):
     return enzymenlijst, badline
 
 def main():
+    '''
+    input: een zoekwoord
+    output: een lijst met headers waarin het zoekwoord voorkomt met daaronder de namen van de enzymen die voorkomen in de sequentie bijbehorend bij de header, geeft ook errors als deze voorkomen.
+    functie: kijkt welke enzymen voorkomen in de sequenties behorend bij de lijst met headers is gemaakt op basis van het zoekwoord.
+    '''
     try:
         headers, seqs, aantalhaken = lees_inhoud()
     except FileNotFoundError:
